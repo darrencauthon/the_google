@@ -1,5 +1,10 @@
+require "the_google/perspective"
 require "the_google/version"
 
 module TheGoogle
-  # Your code goes here...
+
+  def self.perspective_of input
+    TheGoogle::Perspective.new
+  end
+
 end
