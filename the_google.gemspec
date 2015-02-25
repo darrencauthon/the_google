@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mocha"
 
   spec.add_runtime_dependency 'google-api-client'
+  spec.add_runtime_dependency 'activesupport'
 end

@@ -64,4 +64,10 @@ describe TheGoogle::Perspective do
 
   end
 
+  describe "config" do
+    it "should be a hash with indifferent access" do
+      TheGoogle::Perspective.new({}).config.is_a?(HashWithIndifferentAccess)
+    end
+  end
+
 end
