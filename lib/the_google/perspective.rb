@@ -1,6 +1,9 @@
 module TheGoogle
+
   class Perspective
+
     attr_accessor :config
+
     def initialize config
       @config = HashWithIndifferentAccess.new(config)
     end
@@ -17,5 +20,7 @@ module TheGoogle
         end
       end
     end
+
   end
+
 end
