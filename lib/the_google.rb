@@ -4,7 +4,7 @@ require "the_google/version"
 module TheGoogle
 
   def self.perspective_of input
-    TheGoogle::Perspective.new
+    TheGoogle::Perspective.new input
   end
 
 end
