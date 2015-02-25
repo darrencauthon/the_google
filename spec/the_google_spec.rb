@@ -32,4 +32,20 @@ describe TheGoogle do
 
   end
 
+  describe "config" do
+
+    it "should default to an empty array" do
+      TheGoogle.instance_eval { @config = nil }
+      TheGoogle.config.count.must_equal 0
+      TheGoogle.config.is_a?(Hash).must_equal true
+    end
+
+    it "should return whatever is set in config" do
+      config = Object.new
+      TheGoogle.set_config config
+      TheGoogle.config.must_be_same_as config
+    end
+
+  end
+
 end

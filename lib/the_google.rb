@@ -7,4 +7,12 @@ module TheGoogle
     TheGoogle::Perspective.new input.merge(self.config)
   end
 
+  def self.set_config config
+    @config = config
+  end
+
+  def self.config
+    @config || {}
+  end
+
 end
