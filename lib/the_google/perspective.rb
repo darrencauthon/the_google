@@ -2,10 +2,10 @@ module TheGoogle
 
   class Perspective
 
-    attr_accessor :config
+    attr_reader :config
 
     def initialize config
-      @config = HashWithIndifferentAccess.new(config)
+      @config = HashWithIndifferentAccess.new config
     end
 
     def client
