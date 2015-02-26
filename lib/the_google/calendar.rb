@@ -24,8 +24,8 @@ module TheGoogle
       results.data.items.map do |x|
         TheGoogle::Event.new.tap do |e|
           e.name = x.summary
-          e.start = x.start.date_time
-          e.end = x.end.date_time
+          e.start = x.start.date_time || Time.parse(x.start.date)
+          e.end = x.end.date_time || Time.parse(x.end.date)
         end
       end
     end

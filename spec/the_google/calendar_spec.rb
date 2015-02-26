@@ -134,6 +134,45 @@ describe TheGoogle::Calendar do
 
       end
 
+      describe "and the google api call returns one all-day event" do
+
+        let(:items) do
+          [
+            Struct.new(:summary, :start, :end)
+                  .new(random_string,
+                       Struct.new(:date_time, :date).new(nil, Object.new),
+                       Struct.new(:date_time, :date).new(nil, Object.new)),
+          ]
+        end
+
+        let(:the_start) { Object.new }
+        let(:the_end)   { Object.new }
+
+        before do
+
+          Time.stubs(:parse).with(items[0].start.date).returns the_start
+          Time.stubs(:parse).with(items[0].end.date).returns the_end
+
+          client.stubs(:execute)
+                .with(api_method: service.events.list,
+                      parameters: { 
+                                    'calendarId' => calendar.id,
+                                    'timeMin'    => formatted_time_min,
+                                    'timeMax'    => formatted_time_max,
+                                  })
+                .returns api_result
+        end
+
+        it "should return the start" do
+          results[0].start.must_be_same_as the_start
+        end
+
+        it "should return the end" do
+          results[0].end.must_be_same_as the_end
+        end
+
+      end
+
     end
 
   end
