@@ -84,7 +84,7 @@ describe TheGoogle::Perspective do
 
     before do
       perspective.stubs(:client).returns client
-      client.stubs(:discovered_api).with('calendar', 'v3').returns service
+      perspective.stubs(:calendar_service).returns service
       client.stubs(:execute)
             .with(api_method: service.calendar_list.list)
             .returns google_data
@@ -98,6 +98,18 @@ describe TheGoogle::Perspective do
       perspective.calendars.must_be_same_as calendars
     end
 
+  end
+
+  describe "calendar service" do
+
+    it "should return the discoverable calendar api" do
+      perspective = TheGoogle::Perspective.new({})
+      service = Object.new
+      client = Object.new
+      perspective.stubs(:client).returns client
+      client.stubs(:discovered_api).with('calendar', 'v3').returns service
+      service = perspective.calendar_service
+    end
   end
 
 end

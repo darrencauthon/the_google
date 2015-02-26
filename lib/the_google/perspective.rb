@@ -22,10 +22,13 @@ module TheGoogle
     end
 
     def calendars
-      service = client.discovered_api 'calendar', 'v3'
-      api_method = service.calendar_list.list
+      api_method = calendar_service.calendar_list.list
       data = client.execute(api_method: api_method)
       TheGoogle::Calendar.build_all_from data
+    end
+
+    def calendar_service
+      client.discovered_api 'calendar', 'v3'
     end
 
   end
