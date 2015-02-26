@@ -41,6 +41,11 @@ describe TheGoogle::Calendar do
         results[1].id.must_equal items[1].id
       end
 
+      it "should pass the perspective along to each of the calendar objects" do
+        results[0].perspective.must_be_same_as perspective
+        results[1].perspective.must_be_same_as perspective
+      end
+
     end
 
   end

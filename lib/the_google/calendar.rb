@@ -3,6 +3,7 @@ module TheGoogle
   class Calendar
 
     attr_accessor :name, :access_role, :id
+    attr_accessor :perspective
 
     def self.build_all_from api_output, perspective
       api_output.data.items.map do |item|
@@ -10,6 +11,7 @@ module TheGoogle
           c.name        = item.summary
           c.access_role = item.access_role
           c.id          = item.id
+          c.perspective = perspective
         end
       end
     end
