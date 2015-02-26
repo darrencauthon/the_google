@@ -71,28 +71,33 @@ describe TheGoogle::Perspective do
   end
 
   describe "calendars" do
-    it "should return all of the calendars" do
 
-      perspective = TheGoogle::Perspective.new({})
+    let(:perspective) { TheGoogle::Perspective.new({}) }
+    let(:client)      { Object.new }
 
-      client = Object.new
+    let(:service) do
+      Struct.new(:calendar_list).new(Struct.new(:list).new(Object.new))
+    end
+
+    let(:google_data) { Object.new }
+    let(:calendars)   { Object.new }
+
+    before do
       perspective.stubs(:client).returns client
-
-      service = Struct.new(:calendar_list).new(Struct.new(:list).new(Object.new))
       perspective.stubs(:service).returns service
-
-      google_data = Object.new
       client.stubs(:execute)
             .with(api_method: service.calendar_list.list)
             .returns google_data
 
-      expected = Object.new
       TheGoogle::Calendar.stubs(:build_all_from)
                          .with(google_data)
-                         .returns expected
-
-      perspective.calendars.must_be_same_as expected
+                         .returns calendars
     end
+
+    it "should return all of the calendars" do
+      perspective.calendars.must_be_same_as calendars
+    end
+
   end
 
 end
