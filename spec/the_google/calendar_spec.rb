@@ -50,4 +50,76 @@ describe TheGoogle::Calendar do
 
   end
 
+  describe "events between" do
+
+    #client.execute(api_method: service.events.list, parameters: { 'calendarId' => 'my@email.com', 'timeMin' => (DateTime.now - 7.days).to_s, 'timeMax' => (DateTime.now - 6.days).to_s })
+    #_.data.items.first
+    #<Google::APIClient::Schema::Calendar::V3::Event:0x3ff53b658040 DATA:{"kind"=>"calendar#event", "etag"=>"\"3379919409854001\"", "id"=>"the_id", "status"=>"confirmed", "htmlLink"=>"https://www.google.com/calendar/event?eid=123", "created"=>"2015-02-23T19:04:19.000Z", "updated"=>"2015-02-26T14:08:24.927Z", "summary"=>"Important meeting", "location"=>"online conference room", "creator"=>{"email"=>"creator@creator.com", "displayName"=>"Mr. Creator"}, "organizer"=>{"email"=>"organizer@organizer", "displayName"=>"The organizer"}, "start"=>{"dateTime"=>"2015-02-24T13:30:00-06:00"}, "end"=>{"dateTime"=>"2015-02-24T14:30:00-06:00"}, "iCalUID"=>"12345", "sequence"=>0, "attendees"=>[{"email"=>"attendee@email.com", "displayName"=>"Mr Attendee", "responseStatus"=>"accepted"}], "hangoutLink"=>"https://plus.google.com/hangouts/_/sigh/meet?hceid=1234", "reminders"=>{"useDefault"=>true}}>
+    let(:calendar) do
+      TheGoogle::Calendar.new.tap do |c|
+        c.perspective = perspective
+        c.id          = calendar_id
+      end
+    end
+
+    let(:perspective) do
+      Struct.new(:client, :calendar_service).new client, service
+    end
+
+    let(:calendar_id) { random_string }
+    let(:client)      { Object.new    }
+
+    let(:service) do
+      Struct.new(:events).new(Struct.new(:list).new(Object.new))
+    end
+
+    describe "and the google api call returns two events" do
+
+      let(:time_min) { Struct.new(:to_s).new(Object.new) }
+      let(:time_max) { Struct.new(:to_s).new(Object.new) }
+
+      let(:formatted_time_min) { Object.new }
+      let(:formatted_time_max) { Object.new }
+
+      let(:api_result) do
+        Struct.new(:data).new(Struct.new(:items).new(items))
+      end
+
+      let(:items) do
+        [
+          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new)),
+          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new)),
+        ]
+      end
+
+      let(:results) { calendar.events_between(time_min, time_max) }
+
+      before do
+        DateTime.stubs(:parse).with(time_min.to_s).returns Struct.new(:to_s).new(formatted_time_min)
+        DateTime.stubs(:parse).with(time_max.to_s).returns Struct.new(:to_s).new(formatted_time_max)
+
+        client.stubs(:execute)
+              .with(api_method: service.events.list,
+                    parameters: { 
+                                  'calendarId' => calendar.id,
+                                  'timeMin'    => formatted_time_min,
+                                  'timeMax'    => formatted_time_max,
+                                })
+              .returns api_result
+      end
+
+      it "should return two events" do
+        results.count.must_equal 2
+        results.each { |x| x.is_a?(TheGoogle::Event).must_equal true }
+      end
+
+      it "should return the summary of each event as the name" do
+        results[0].name.must_equal items[0].summary
+        results[1].name.must_equal items[1].summary
+      end
+
+    end
+
+  end
+
 end
