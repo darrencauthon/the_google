@@ -84,7 +84,7 @@ describe TheGoogle::Perspective do
 
     before do
       perspective.stubs(:client).returns client
-      perspective.stubs(:service).returns service
+      client.stubs(:discovered_api).with('calendar', 'v3').returns service
       client.stubs(:execute)
             .with(api_method: service.calendar_list.list)
             .returns google_data
