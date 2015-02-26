@@ -22,6 +22,9 @@ module TheGoogle
     end
 
     def calendars
+      api_method = service.calendar_list.list
+      data = client.execute(api_method: api_method)
+      TheGoogle::Calendar.build_all_from data
     end
 
   end
