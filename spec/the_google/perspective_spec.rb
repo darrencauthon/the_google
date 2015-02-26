@@ -101,15 +101,19 @@ describe TheGoogle::Perspective do
   end
 
   describe "calendar service" do
+    let(:perspective) { TheGoogle::Perspective.new({}) }
+    let(:service)     { Object.new }
+    let(:client)      { Object.new }
 
-    it "should return the discoverable calendar api" do
-      perspective = TheGoogle::Perspective.new({})
-      service = Object.new
-      client = Object.new
+    before do
       perspective.stubs(:client).returns client
       client.stubs(:discovered_api).with('calendar', 'v3').returns service
-      service = perspective.calendar_service
     end
+
+    it "should return the discoverable calendar api" do
+      perspective.calendar_service.must_be_same_as service
+    end
+
   end
 
 end
