@@ -7,7 +7,8 @@ describe TheGoogle::Calendar do
 
   describe "build all from" do
 
-    let(:api_output) { Struct.new(:data).new(Struct.new(:items).new(items)) }
+    let(:api_output)  { Struct.new(:data).new(Struct.new(:items).new(items)) }
+    let(:perspective) { Object.new }
 
     describe "there are two calendars" do
 
@@ -18,7 +19,7 @@ describe TheGoogle::Calendar do
         ].map { |x| Struct.new(:summary, :access_role, :id).new *x }
       end
 
-      let(:results) { TheGoogle::Calendar.build_all_from api_output }
+      let(:results) { TheGoogle::Calendar.build_all_from api_output, perspective }
 
       it "should return two calendar objects" do
         results.count.must_equal 2

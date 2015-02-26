@@ -90,7 +90,7 @@ describe TheGoogle::Perspective do
             .returns google_data
 
       TheGoogle::Calendar.stubs(:build_all_from)
-                         .with(google_data)
+                         .with(google_data, perspective)
                          .returns calendars
     end
 

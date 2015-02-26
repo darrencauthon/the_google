@@ -4,7 +4,7 @@ module TheGoogle
 
     attr_accessor :name, :access_role, :id
 
-    def self.build_all_from api_output
+    def self.build_all_from api_output, perspective
       api_output.data.items.map do |item|
         new.tap do |c|
           c.name        = item.summary
