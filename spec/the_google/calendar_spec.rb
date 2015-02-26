@@ -173,6 +173,78 @@ describe TheGoogle::Calendar do
 
       end
 
+      describe "and the google api call returns an event with no start date" do
+
+        let(:items) do
+          [
+            Struct.new(:summary, :start, :end)
+                  .new(random_string,
+                       Struct.new(:date_time, :date).new(nil, Object.new),
+                       Struct.new(:date_time, :date).new(nil, Object.new)),
+            Struct.new(:summary, :start, :end)
+                  .new(random_string,
+                       Struct.new(:date_time, :date).new(nil, nil),
+                       Struct.new(:date_time, :date).new(nil, Object.new)),
+          ]
+        end
+
+        let(:a_date) { Object.new }
+
+        before do
+          Time.stubs(:parse).returns a_date
+          client.stubs(:execute)
+                .with(api_method: service.events.list,
+                      parameters: { 
+                                    'calendarId' => calendar.id,
+                                    'timeMin'    => formatted_time_min,
+                                    'timeMax'    => formatted_time_max,
+                                  })
+                .returns api_result
+        end
+
+        it "should return one record, excluding the record with no date" do
+          results.count.must_equal 1
+          results[0].name.must_equal items[0].summary
+        end
+
+      end
+
+      describe "and the google api call returns an event with no end date" do
+
+        let(:items) do
+          [
+            Struct.new(:summary, :start, :end)
+                  .new(random_string,
+                       Struct.new(:date_time, :date).new(nil, Object.new),
+                       Struct.new(:date_time, :date).new(nil, Object.new)),
+            Struct.new(:summary, :start, :end)
+                  .new(random_string,
+                       Struct.new(:date_time, :date).new(nil, Object.new),
+                       Struct.new(:date_time, :date).new(nil, nil)),
+          ]
+        end
+
+        let(:a_date) { Object.new }
+
+        before do
+          Time.stubs(:parse).returns a_date
+          client.stubs(:execute)
+                .with(api_method: service.events.list,
+                      parameters: { 
+                                    'calendarId' => calendar.id,
+                                    'timeMin'    => formatted_time_min,
+                                    'timeMax'    => formatted_time_max,
+                                  })
+                .returns api_result
+        end
+
+        it "should return one record, excluding the record with no date" do
+          results.count.must_equal 1
+          results[0].name.must_equal items[0].summary
+        end
+
+      end
+
     end
 
   end
