@@ -1,5 +1,6 @@
 require 'active_support/hash_with_indifferent_access'
 require 'google/api_client'
+require "the_google/calendar"
 require "the_google/perspective"
 require "the_google/version"
 

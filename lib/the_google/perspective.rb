@@ -21,6 +21,9 @@ module TheGoogle
       end
     end
 
+    def calendars
+    end
+
   end
 
 end
