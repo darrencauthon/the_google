@@ -9,7 +9,10 @@ describe TheGoogle::Perspective do
 
     let(:result) { perspective.client }
 
-    before { Signet::OAuth2::Client.any_instance.stubs(:expired?).returns false }
+    before do
+      Signet::OAuth2::Client.any_instance.stubs(:expired?).returns false
+      Signet::OAuth2::Client.any_instance.stubs :fetch_access_token!
+    end
 
     it "should return a Google API Client" do
       result.is_a? Google::APIClient
@@ -45,11 +48,6 @@ describe TheGoogle::Perspective do
       result.authorization.access_token.must_equal value
     end
 
-    describe "the refresh token exists" do
-      before { config[:refresh_token] = random_string }
-
-      describe "and the authorization expired" do
-        before { Signet::OAuth2::Client.any_instance.stubs(:expired?).returns true }
         it "should fetch a new access token" do
           google_client = Google::APIClient.new
           google_client.authorization.expects :fetch_access_token!
@@ -58,9 +56,6 @@ describe TheGoogle::Perspective do
 
           TheGoogle::Perspective.new(config).client
         end
-      end
-
-    end
 
   end
 
