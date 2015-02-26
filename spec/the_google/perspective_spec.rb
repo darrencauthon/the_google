@@ -113,7 +113,6 @@ describe TheGoogle::Perspective do
     it "should return the discoverable calendar api" do
       perspective.calendar_service.must_be_same_as service
     end
-
   end
 
 end
