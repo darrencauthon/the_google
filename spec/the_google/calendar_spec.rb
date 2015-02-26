@@ -87,8 +87,8 @@ describe TheGoogle::Calendar do
 
       let(:items) do
         [
-          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new)),
-          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new)),
+          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
+          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
         ]
       end
 
@@ -116,6 +116,16 @@ describe TheGoogle::Calendar do
       it "should return the summary of each event as the name" do
         results[0].name.must_equal items[0].summary
         results[1].name.must_equal items[1].summary
+      end
+
+      it "should return the start" do
+        results[0].start.must_equal items[0].start.date_time
+        results[1].start.must_equal items[1].start.date_time
+      end
+
+      it "should return the end" do
+        results[0].end.must_equal items[0].end.date_time
+        results[1].end.must_equal items[1].end.date_time
       end
 
     end
