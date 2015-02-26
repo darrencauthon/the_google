@@ -73,7 +73,7 @@ describe TheGoogle::Calendar do
       Struct.new(:events).new(Struct.new(:list).new(Object.new))
     end
 
-    describe "and the google api call returns two events" do
+    describe "making a google api call" do
 
       let(:time_min) { Struct.new(:to_s).new(Object.new) }
       let(:time_max) { Struct.new(:to_s).new(Object.new) }
@@ -85,47 +85,53 @@ describe TheGoogle::Calendar do
         Struct.new(:data).new(Struct.new(:items).new(items))
       end
 
-      let(:items) do
-        [
-          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
-          Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
-        ]
-      end
-
       let(:results) { calendar.events_between(time_min, time_max) }
 
       before do
         DateTime.stubs(:parse).with(time_min.to_s).returns Struct.new(:to_s).new(formatted_time_min)
         DateTime.stubs(:parse).with(time_max.to_s).returns Struct.new(:to_s).new(formatted_time_max)
-
-        client.stubs(:execute)
-              .with(api_method: service.events.list,
-                    parameters: { 
-                                  'calendarId' => calendar.id,
-                                  'timeMin'    => formatted_time_min,
-                                  'timeMax'    => formatted_time_max,
-                                })
-              .returns api_result
       end
 
-      it "should return two events" do
-        results.count.must_equal 2
-        results.each { |x| x.is_a?(TheGoogle::Event).must_equal true }
-      end
+      describe "and the google api call returns two events" do
 
-      it "should return the summary of each event as the name" do
-        results[0].name.must_equal items[0].summary
-        results[1].name.must_equal items[1].summary
-      end
+        let(:items) do
+          [
+            Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
+            Struct.new(:summary, :start, :end).new(random_string, Struct.new(:date_time).new(Object.new), Struct.new(:date_time).new(Object.new)),
+          ]
+        end
 
-      it "should return the start" do
-        results[0].start.must_equal items[0].start.date_time
-        results[1].start.must_equal items[1].start.date_time
-      end
+        before do
+          client.stubs(:execute)
+                .with(api_method: service.events.list,
+                      parameters: { 
+                                    'calendarId' => calendar.id,
+                                    'timeMin'    => formatted_time_min,
+                                    'timeMax'    => formatted_time_max,
+                                  })
+                .returns api_result
+        end
 
-      it "should return the end" do
-        results[0].end.must_equal items[0].end.date_time
-        results[1].end.must_equal items[1].end.date_time
+        it "should return two events" do
+          results.count.must_equal 2
+          results.each { |x| x.is_a?(TheGoogle::Event).must_equal true }
+        end
+
+        it "should return the summary of each event as the name" do
+          results[0].name.must_equal items[0].summary
+          results[1].name.must_equal items[1].summary
+        end
+
+        it "should return the start" do
+          results[0].start.must_equal items[0].start.date_time
+          results[1].start.must_equal items[1].start.date_time
+        end
+
+        it "should return the end" do
+          results[0].end.must_equal items[0].end.date_time
+          results[1].end.must_equal items[1].end.date_time
+        end
+
       end
 
     end
