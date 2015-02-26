@@ -1,6 +1,9 @@
 module TheGoogle
+
   class Calendar
+
     attr_accessor :name, :access_role, :id
+
     def self.build_all_from api_output
       api_output.data.items.map do |item|
         new.tap do |c|
@@ -10,5 +13,7 @@ module TheGoogle
         end
       end
     end
+
   end
+
 end
