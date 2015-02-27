@@ -48,15 +48,6 @@ describe TheGoogle::Perspective do
       result.authorization.access_token.must_equal value
     end
 
-        it "should fetch a new access token" do
-          google_client = Google::APIClient.new
-          google_client.authorization.expects :fetch_access_token!
-
-          Google::APIClient.stubs(:new).returns google_client
-
-          TheGoogle::Perspective.new(config).client
-        end
-
   end
 
   describe "config" do
