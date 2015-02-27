@@ -16,7 +16,10 @@ module TheGoogle
         a.authorization.refresh_token = config[:refresh_token]
         a.authorization.access_token = config[:access_token]
         #if a.authorization.refresh_token && a.authorization.expired?
+        begin
           a.authorization.fetch_access_token!
+        rescue
+        end
         #end
       end
     end
