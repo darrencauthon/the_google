@@ -18,8 +18,8 @@ module TheGoogle
 
     def add event
       data = { 'summary' => event.name }.tap do |d|
-               d['start'] = DateTime.parse(event.start.to_s).to_s if event.start
-               d['end']   = DateTime.parse(event.end.to_s).to_s if event.end
+               d['start'] = { 'dateTime' => DateTime.parse(event.start.to_s).to_s } if event.start
+               d['end']   = { 'dateTime' => DateTime.parse(event.end.to_s).to_s } if event.end
              end
       perspective.client.execute(api_method: perspective.calendar_service.events.insert,
                                  headers:    { 'Content-Type' => 'application/json' },

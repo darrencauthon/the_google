@@ -63,7 +63,7 @@ describe TheGoogle::Calendar do
         DateTime.stubs(:parse).with(start.to_s).returns Struct.new(:to_s).new(expected)
         event.start = start
         client.expects(:execute).with do |request|
-          JSON.parse(request[:body])['start'].must_equal expected
+          JSON.parse(request[:body])['start']['dateTime'].must_equal expected
         end
         calendar.add event
       end
@@ -74,7 +74,7 @@ describe TheGoogle::Calendar do
         DateTime.stubs(:parse).with(the_end.to_s).returns Struct.new(:to_s).new(expected)
         event.end = the_end
         client.expects(:execute).with do |request|
-          JSON.parse(request[:body])['end'].must_equal expected
+          JSON.parse(request[:body])['end']['dateTime'].must_equal expected
         end
         calendar.add event
       end
