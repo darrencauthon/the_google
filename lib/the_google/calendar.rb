@@ -17,13 +17,10 @@ module TheGoogle
     end
 
     def add event
-      data = { 'summary' => event.name }
-      if event.start
-        data['start'] = DateTime.parse(event.start.to_s).to_s
-      end
-      if event.end
-        data['end'] = DateTime.parse(event.end.to_s).to_s
-      end
+      data = { 'summary' => event.name }.tap do |d|
+               d['start'] = DateTime.parse(event.start.to_s).to_s if event.start
+               d['end']   = DateTime.parse(event.end.to_s).to_s if event.end
+             end
       perspective.client.execute(api_method: perspective.calendar_service.events.insert,
                                  headers:    { 'Content-Type' => 'application/json' },
                                  body:       JSON.dump(data),
