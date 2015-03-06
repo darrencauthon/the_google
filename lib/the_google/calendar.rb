@@ -17,7 +17,8 @@ module TheGoogle
     end
 
     def add event
-      perspective.client.execute(api_method: perspective.calendar_service.events.insert)
+      perspective.client.execute(api_method: perspective.calendar_service.events.insert,
+                                 parameters: { 'calendarId' => id } )
     end
 
     def events_between min, max

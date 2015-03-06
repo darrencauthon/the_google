@@ -24,19 +24,29 @@ describe TheGoogle::Calendar do
       Struct.new(:client, :calendar_service).new client, service
     end
 
-    it "should insert the event" do
-      a = service.events.insert
-      client.expects(:execute).with do |request|
-        request[:api_method].must_be_same_as a
+    describe "inserting the event" do
+      it "should insert the event" do
+        a = service.events.insert
+        client.expects(:execute).with do |request|
+          request[:api_method].must_be_same_as a
+        end
+        calendar.add event
       end
-      calendar.add event
-    end
+
+      it "should set the calendar id" do
+        id = calendar_id
+        client.expects(:execute).with do |request|
+          request[:parameters]['calendarId'].must_be_same_as id
+        end
+        calendar.add event
+      end
 
       #client.execute(:api_method => service.events.insert,
                      #:parameters => { 'calendarId' => calendar.id },
                      #:body       => JSON.dump(event),
                      #:headers    => { 'Content-Type' => 'application/json' } )
 
+    end
 
   end
 
