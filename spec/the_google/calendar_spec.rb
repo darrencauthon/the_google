@@ -41,6 +41,14 @@ describe TheGoogle::Calendar do
         calendar.add event
       end
 
+      it "should set a json header" do
+        client.expects(:execute).with do |request|
+          request[:headers].must_equal( { 'Content-Type' => 'application/json' } )
+        end
+        calendar.add event
+          
+      end
+
       #client.execute(:api_method => service.events.insert,
                      #:parameters => { 'calendarId' => calendar.id },
                      #:body       => JSON.dump(event),

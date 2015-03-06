@@ -18,6 +18,7 @@ module TheGoogle
 
     def add event
       perspective.client.execute(api_method: perspective.calendar_service.events.insert,
+                                 headers:    { 'Content-Type' => 'application/json' },
                                  parameters: { 'calendarId' => id } )
     end
 
