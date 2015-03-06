@@ -46,7 +46,37 @@ describe TheGoogle::Calendar do
           request[:headers].must_equal( { 'Content-Type' => 'application/json' } )
         end
         calendar.add event
-          
+      end
+
+      it "should pass the name of the event as the summary" do
+        name = random_string
+        event.name = name
+        client.expects(:execute).with do |request|
+          JSON.parse(request[:body])['summary'].must_equal name
+        end
+        calendar.add event
+      end
+
+      it "should pass the start" do
+        expected = random_string
+        start = Struct.new(:to_s).new random_string
+        DateTime.stubs(:parse).with(start.to_s).returns Struct.new(:to_s).new(expected)
+        event.start = start
+        client.expects(:execute).with do |request|
+          JSON.parse(request[:body])['start'].must_equal expected
+        end
+        calendar.add event
+      end
+
+      it "should pass the end" do
+        expected = random_string
+        the_end = Struct.new(:to_s).new random_string
+        DateTime.stubs(:parse).with(the_end.to_s).returns Struct.new(:to_s).new(expected)
+        event.end = the_end
+        client.expects(:execute).with do |request|
+          JSON.parse(request[:body])['end'].must_equal expected
+        end
+        calendar.add event
       end
 
       #client.execute(:api_method => service.events.insert,
