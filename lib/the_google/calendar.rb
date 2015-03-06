@@ -16,6 +16,10 @@ module TheGoogle
       end
     end
 
+    def add event
+      perspective.client.execute(api_method: perspective.calendar_service.events.insert)
+    end
+
     def events_between min, max
       min = DateTime.parse(min.to_s).to_s
       max = DateTime.parse(max.to_s).to_s

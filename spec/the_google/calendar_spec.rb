@@ -2,6 +2,44 @@ require_relative '../spec_helper'
 
 describe TheGoogle::Calendar do
 
+  describe "add" do
+
+    let(:calendar_id) { Object.new }
+    let(:calendar) do
+      TheGoogle::Calendar.new.tap do |c| 
+        c.id = calendar_id
+        c.stubs(:perspective).returns perspective
+      end
+    end
+
+    let(:event) { TheGoogle::Event.new }
+
+    let(:client) { Object.new }
+
+    let(:service) do
+      Struct.new(:events).new(Struct.new(:insert).new(Object.new))
+    end
+
+    let(:perspective) do
+      Struct.new(:client, :calendar_service).new client, service
+    end
+
+    it "should insert the event" do
+      a = service.events.insert
+      client.expects(:execute).with do |request|
+        request[:api_method].must_be_same_as a
+      end
+      calendar.add event
+    end
+
+      #client.execute(:api_method => service.events.insert,
+                     #:parameters => { 'calendarId' => calendar.id },
+                     #:body       => JSON.dump(event),
+                     #:headers    => { 'Content-Type' => 'application/json' } )
+
+
+  end
+
   #result.data.items.first
   #<Google::APIClient::Schema::Calendar::V3::CalendarListEntry:0x3ff53b6cc01c DATA:{"kind"=>"calendar#calendarListEntry", "etag"=>"\"1524894352006000\"", "id"=>"an@email.address", "summary"=>"the calendar name", "timeZone"=>"America/Chicago", "colorId"=>"17", "backgroundColor"=>"#9a9cff", "foregroundColor"=>"#000000", "selected"=>true, "accessRole"=>"owner", "defaultReminders"=>[{"method"=>"popup", "minutes"=>10}], "notificationSettings"=>{"notifications"=>[{"type"=>"eventCreation", "method"=>"email"}, {"type"=>"eventChange", "method"=>"email"}, {"type"=>"eventCancellation", "method"=>"email"}, {"type"=>"eventResponse", "method"=>"email"}]}, "primary"=>true}>
 
