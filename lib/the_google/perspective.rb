@@ -9,14 +9,15 @@ module TheGoogle
     end
 
     def client
-      Google::APIClient.new.tap do |a|
-        a.authorization.client_id     = config[:client_id]
-        a.authorization.client_secret = config[:client_secret]
-        a.authorization.scope         = config[:scope]
-        a.authorization.refresh_token = config[:refresh_token]
-        a.authorization.access_token  = config[:access_token]
-        if a.authorization.refresh_token && a.authorization.expired?
-          a.authorization.fetch_access_token!
+      Google::APIClient.new.tap do |api_client|
+        api_client.authorization.tap do |a|
+          a.client_id     = config[:client_id]
+          a.client_secret = config[:client_secret]
+          a.scope         = config[:scope]
+          a.refresh_token = config[:refresh_token]
+          a.access_token  = config[:access_token]
+
+          a.fetch_access_token! if a.refresh_token && a.expired?
         end
       end
     end
