@@ -28,11 +28,7 @@ module TheGoogle
     end
 
     def events_between min, max
-      min = DateTime.parse(min.to_s).to_s
-      max = DateTime.parse(max.to_s).to_s
-      results = perspective.client.execute(api_method: perspective.calendar_service.events.list, 
-                                           parameters: { 'calendarId' => id, 'timeMin' => min, 'timeMax' => max })
-      results.data.items.map do |x|
+      event_records_between(min, max).map do |x|
         TheGoogle::Event.new.tap do |e|
           e.name = x.summary
           if x.start.date_time || x.start.date
@@ -43,6 +39,18 @@ module TheGoogle
           end
         end
       end.select { |x| x.start && x.end }
+    end
+
+    private
+
+    def event_records_between min, max
+      min = DateTime.parse(min.to_s).to_s
+      max = DateTime.parse(max.to_s).to_s
+      perspective
+        .client
+        .execute(api_method: perspective.calendar_service.events.list, 
+                 parameters: { 'calendarId' => id, 'timeMin' => min, 'timeMax' => max })
+        .data.items
     end
 
   end
