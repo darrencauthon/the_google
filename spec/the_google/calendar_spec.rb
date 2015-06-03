@@ -233,7 +233,7 @@ describe TheGoogle::Calendar do
 
           describe "and applying the recurrence returns two things" do
             before do
-              TheGoogle.stubs(:apply_recurrence).with do |recurred_item|
+              TheGoogle::Event.stubs(:apply_recurrence).with do |recurred_item|
                 recurred_item.recurrence.first == "RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO"
               end.returns [items[0].dup, items[0].dup]
             end

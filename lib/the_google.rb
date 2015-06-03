@@ -19,8 +19,4 @@ module TheGoogle
     @config || {}
   end
 
-  def self.apply_recurrence event
-    [event]
-  end
-
 end
