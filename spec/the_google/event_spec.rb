@@ -6,7 +6,9 @@ describe TheGoogle::Event do
 
     let(:event) { TheGoogle::Event.new }
 
-    let(:result) { TheGoogle::Event.apply_recurrence event }
+    let(:result) { TheGoogle::Event.apply_recurrence event, timeframe }
+
+    let(:timeframe) { nil }
 
     describe "and the item has no recurrence" do
       before { event.recurrence = nil }

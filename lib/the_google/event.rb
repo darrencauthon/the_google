@@ -8,7 +8,7 @@ module TheGoogle
       self.start && self.end
     end
 
-    def self.apply_recurrence event
+    def self.apply_recurrence event, timeframe
       [event]
     end
 

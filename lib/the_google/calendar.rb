@@ -31,7 +31,7 @@ module TheGoogle
       event_records_between(min, max)
         .map    { |r| build_the_google_event_from r }
         .select { |e| e.valid? }
-        .map    { |e| e.recurrence ? TheGoogle::Event.apply_recurrence(e) : e }
+        .map    { |e| e.recurrence ? TheGoogle::Event.apply_recurrence(e, [min, max]) : e }
         .flatten
     end
 
