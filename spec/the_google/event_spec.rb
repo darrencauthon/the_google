@@ -8,9 +8,22 @@ describe TheGoogle::Event do
 
     let(:result) { TheGoogle::Event.apply_recurrence event }
 
-    it "should return the event, alone in an array" do
-      result.count.must_equal 1
-      result[0].must_be_same_as event
+    describe "and the item has no recurrence" do
+      before { event.recurrence = nil }
+
+      it "should return the event, alone in an array" do
+        result.count.must_equal 1
+        result[0].must_be_same_as event
+      end
+    end
+
+    describe "and the item has an empty recurrence" do
+      before { event.recurrence = '' }
+
+      it "should return the event, alone in an array" do
+        result.count.must_equal 1
+        result[0].must_be_same_as event
+      end
     end
 
   end
