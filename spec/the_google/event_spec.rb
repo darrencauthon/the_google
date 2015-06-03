@@ -64,6 +64,11 @@ describe TheGoogle::Event do
           results[0].name.must_equal event.name
           results[1].name.must_equal event.name
         end
+
+        it "should set the start date to whatever was returned by the date service" do
+          results[0].start.must_equal date1
+          results[1].start.must_equal date2
+        end
       end
 
     end
