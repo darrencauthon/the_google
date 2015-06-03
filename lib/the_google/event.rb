@@ -9,13 +9,21 @@ module TheGoogle
     end
 
     def self.apply_recurrence event, timeframe
-      return [event] if event.recurrence.nil? || event.recurrence.empty?
-      dates_for(event).map { |d| build_a_new_event_for event, d, timeframe }
+      this_event_recurs?(event) ? build_the_events_for(event, timeframe)
+                                : [event]
     end
 
     class << self
 
       private
+
+      def this_event_recurs? event
+        event.recurrence && event.recurrence.any?
+      end
+
+      def build_the_events_for event, timeframe
+        dates_for(event).map { |d| build_a_new_event_for event, d, timeframe }
+      end
 
       def dates_for event
         lookup_recurring_dates date: event.start, recur: event.recurrence[0]
