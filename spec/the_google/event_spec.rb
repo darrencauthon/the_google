@@ -10,6 +10,12 @@ describe TheGoogle::Event do
         m.target      == TheGoogle::Event.singleton_class
       end.count.must_equal 1
     end
+
+    it "should return the date, by default" do
+      the_start = Object.new
+      results = TheGoogle::Event.lookup_recurring_dates(date: the_start)
+      results.must_equal [the_start]
+    end
   end
 
   describe "apply recurrence" do

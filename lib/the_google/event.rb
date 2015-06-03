@@ -16,6 +16,7 @@ module TheGoogle
     class << self
 
       interchangeable_method(:lookup_recurring_dates) do |options|
+        [options[:date]]
       end
 
       private
