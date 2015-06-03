@@ -50,6 +50,7 @@ describe TheGoogle::Event do
       before { event.recurrence = [recurrence] }
 
       describe "and the recurrence expands to two different dates" do
+
         before do
           TheGoogle::Event
             .stubs(:lookup_recurring_dates)
@@ -76,6 +77,7 @@ describe TheGoogle::Event do
           results[0].end.must_equal date1 + diff
           results[1].end.must_equal date2 + diff
         end
+
       end
 
     end
