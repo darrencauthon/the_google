@@ -160,13 +160,15 @@ describe TheGoogle::Calendar do
       Struct.new(:events).new(Struct.new(:list).new(Object.new))
     end
 
+    let(:now) { Time.now }
+
     describe "making a google api call" do
 
       let(:time_min) { Struct.new(:to_s).new(Object.new) }
       let(:time_max) { Struct.new(:to_s).new(Object.new) }
 
-      let(:formatted_time_min) { Object.new }
-      let(:formatted_time_max) { Object.new }
+      let(:formatted_time_min) { now }
+      let(:formatted_time_max) { now + random_integer }
 
       let(:api_result) do
         Struct.new(:data).new(Struct.new(:items).new(items))
@@ -224,11 +226,6 @@ describe TheGoogle::Calendar do
           before do
             items[0].stubs(:recurrence).returns ["RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO"]
             items[1].stubs(:recurrence).returns nil
-          end
-
-          it "should set the recurrence" do
-            results[0].recurrence.must_equal items[0].recurrence
-            results[1].recurrence.nil?.must_equal true
           end
 
           describe "and applying the recurrence returns two things" do
