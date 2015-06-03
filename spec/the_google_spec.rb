@@ -5,8 +5,8 @@ describe TheGoogle do
   describe "perspective_of" do
 
     let(:key)   { random_string }
-    let(:value) { random_string }
-    let(:input) { { key => value } }
+    let(:the_value) { random_string }
+    let(:input) { { key => the_value } }
 
     let(:config)       { { config_key => config_value } }
     let(:config_key)   { random_string }
@@ -23,7 +23,7 @@ describe TheGoogle do
     end
 
     it "should set the config variables based on what is passed in" do
-      result.config[key].must_equal value
+      result.config[key].must_equal the_value
     end
 
     it "should also merge in the configuration values" do
