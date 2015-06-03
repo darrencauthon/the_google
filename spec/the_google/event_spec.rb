@@ -7,6 +7,7 @@ describe TheGoogle::Event do
     let(:event) do
       TheGoogle::Event.new.tap do |e|
         e.start = now - random_integer
+        e.name  = random_string
       end
     end
 
@@ -57,6 +58,11 @@ describe TheGoogle::Event do
 
         it "should return two events" do
           results.count.must_equal 2
+        end
+
+        it "should return event objects, with the same name as the event" do
+          results[0].name.must_equal event.name
+          results[1].name.must_equal event.name
         end
       end
 
