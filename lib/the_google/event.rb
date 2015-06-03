@@ -27,14 +27,14 @@ module TheGoogle
       end
 
       def build_the_events_for event, timeframe
-        dates_for(event).map { |d| build_a_new_event_for event, d, timeframe }
+        dates_for(event, timeframe).map { |d| build_a_new_event_for event, d }
       end
 
-      def dates_for event
-        lookup_recurring_dates date: event.start, recur: event.recurrence[0]
+      def dates_for event, timeframe
+        lookup_recurring_dates date: event.start, recur: event.recurrence[0], timeframe: timeframe
       end
 
-      def build_a_new_event_for event, date, timeframe
+      def build_a_new_event_for event, date
         event.dup.tap do |new_event|
           new_event.start = date
           new_event.end   = date + (event.end - event.start)

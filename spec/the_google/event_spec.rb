@@ -29,7 +29,7 @@ describe TheGoogle::Event do
 
     let(:results) { TheGoogle::Event.apply_recurrence event, timeframe }
 
-    let(:timeframe) { nil }
+    let(:timeframe) { [min, max] }
 
     let(:now) { Time.now }
 
@@ -69,7 +69,7 @@ describe TheGoogle::Event do
         before do
           TheGoogle::Event
             .stubs(:lookup_recurring_dates)
-            .with( { date: event.start, recur: recurrence } )
+            .with( { date: event.start, recur: recurrence, timeframe: timeframe } )
             .returns [date1, date2]
         end
 
