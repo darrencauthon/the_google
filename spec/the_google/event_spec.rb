@@ -7,6 +7,7 @@ describe TheGoogle::Event do
     let(:event) do
       TheGoogle::Event.new.tap do |e|
         e.start = now - random_integer
+        e.end   = e.start + random_integer
         e.name  = random_string
       end
     end
@@ -68,6 +69,12 @@ describe TheGoogle::Event do
         it "should set the start date to whatever was returned by the date service" do
           results[0].start.must_equal date1
           results[1].start.must_equal date2
+        end
+
+        it "should adjust the end date accordingly" do
+          diff = event.end - event.start
+          results[0].end.must_equal date1 + diff
+          results[1].end.must_equal date2 + diff
         end
       end
 
