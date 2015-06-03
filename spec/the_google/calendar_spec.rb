@@ -231,6 +231,18 @@ describe TheGoogle::Calendar do
             results[1].recurrence.nil?.must_equal true
           end
 
+          describe "and applying the recurrence returns two things" do
+            before do
+              TheGoogle.stubs(:apply_recurrence).with do |recurred_item|
+                recurred_item.recurrence.first == "RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO"
+              end.returns [items[0].dup, items[0].dup]
+            end
+            
+            it "should add one to the results" do
+              results.count.must_equal 3
+            end
+          end
+
         end
 
       end
