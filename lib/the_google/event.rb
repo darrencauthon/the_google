@@ -15,6 +15,9 @@ module TheGoogle
 
     class << self
 
+      interchangeable_method(:lookup_recurring_dates) do |options|
+      end
+
       private
 
       def this_event_recurs? event
