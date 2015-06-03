@@ -5,7 +5,6 @@ describe TheGoogle::Event do
   describe "lookup recurring dates" do
     it "should be an interchangeable method" do
       Interchangeable.methods.select do |m|
-        puts m.target.inspect
         m.method_name == :lookup_recurring_dates &&
         m.target      == TheGoogle::Event.singleton_class
       end.count.must_equal 1
