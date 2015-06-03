@@ -26,6 +26,17 @@ describe TheGoogle::Event do
       end
     end
 
+    describe "and the item has a single recurrence" do
+
+      let(:recurrence) { random_string }
+
+      before { event.recurrence = [recurrence] }
+
+      describe "and the recurrence expands to two different dates" do
+      end
+
+    end
+
   end
 
 end
