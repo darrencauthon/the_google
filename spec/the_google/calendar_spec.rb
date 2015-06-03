@@ -141,6 +141,7 @@ describe TheGoogle::Calendar do
     #client.execute(api_method: service.events.list, parameters: { 'calendarId' => 'my@email.com', 'timeMin' => (DateTime.now - 7.days).to_s, 'timeMax' => (DateTime.now - 6.days).to_s })
     #_.data.items.first
     #<Google::APIClient::Schema::Calendar::V3::Event:0x3ff53b658040 DATA:{"kind"=>"calendar#event", "etag"=>"\"3379919409854001\"", "id"=>"the_id", "status"=>"confirmed", "htmlLink"=>"https://www.google.com/calendar/event?eid=123", "created"=>"2015-02-23T19:04:19.000Z", "updated"=>"2015-02-26T14:08:24.927Z", "summary"=>"Important meeting", "location"=>"online conference room", "creator"=>{"email"=>"creator@creator.com", "displayName"=>"Mr. Creator"}, "organizer"=>{"email"=>"organizer@organizer", "displayName"=>"The organizer"}, "start"=>{"dateTime"=>"2015-02-24T13:30:00-06:00"}, "end"=>{"dateTime"=>"2015-02-24T14:30:00-06:00"}, "iCalUID"=>"12345", "sequence"=>0, "attendees"=>[{"email"=>"attendee@email.com", "displayName"=>"Mr Attendee", "responseStatus"=>"accepted"}], "hangoutLink"=>"https://plus.google.com/hangouts/_/sigh/meet?hceid=1234", "reminders"=>{"useDefault"=>true}}>
+    #<Google::APIClient::Schema::Calendar::V3::Event:0x402b6e8 DATA:{"kind"=>"calendar#event", "etag"=>"\"1234123412342134\"", "id"=>"_the_id", "status"=>"confirmed", "htmlLink"=>"https://www.google.com/calendar/event?eid=789", "created"=>"2015-04-20T18:31:14.000Z", "updated"=>"2015-04-20T18:31:14.549Z", "summary"=>"10 - 7", "creator"=>{"email"=>"test@testing.edu", "displayName"=>"the person", "self"=>true}, "start"=>{"dateTime"=>"2015-04-20T08:00:00-07:00", "timeZone"=>"America/Los_Angeles"}, "end"=>{"dateTime"=>"2015-04-20T10:00:00-07:00", "timeZone"=>"America/Los_Angeles"}, "recurrence"=>["RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO"], "iCalUID"=>"67890", "sequence"=>0, "reminders"=>{"useDefault"=>false}}>
     let(:calendar) do
       TheGoogle::Calendar.new.tap do |c|
         c.perspective = perspective
@@ -216,6 +217,20 @@ describe TheGoogle::Calendar do
         it "should return the end" do
           results[0].end.must_equal items[0].end.date_time
           results[1].end.must_equal items[1].end.date_time
+        end
+
+        describe "and the events have a recurrence" do
+
+          before do
+            items[0].stubs(:recurrence).returns ["RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO"]
+            items[1].stubs(:recurrence).returns nil
+          end
+
+          it "should set the recurrence" do
+            results[0].recurrence.must_equal items[0].recurrence
+            results[1].recurrence.nil?.must_equal true
+          end
+
         end
 
       end

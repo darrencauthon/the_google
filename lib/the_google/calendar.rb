@@ -48,6 +48,7 @@ module TheGoogle
     def build_the_google_event_from record
       TheGoogle::Event.new.tap do |e|
         e.name = record.summary
+        e.recurrence = record.recurrence if record.respond_to?(:recurrence) && record.recurrence
         if record.start.date_time || record.start.date
           e.start = record.start.date_time || Time.parse(record.start.date)
         end
