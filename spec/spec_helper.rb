@@ -7,3 +7,7 @@ require 'timecop'
 def random_string
   SecureRandom.uuid
 end
+
+def random_integer
+  Random.rand(10000)
+end

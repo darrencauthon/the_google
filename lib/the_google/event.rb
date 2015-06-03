@@ -9,7 +9,10 @@ module TheGoogle
     end
 
     def self.apply_recurrence event, timeframe
-      [event]
+      return [event] if event.recurrence.nil?
+      return [event] unless event.recurrence.any?
+      lookup_recurring_dates(date: event.start, recur: event.recurrence[0])
+        .map { |_| nil }
     end
 
   end
