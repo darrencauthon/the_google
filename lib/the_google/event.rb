@@ -15,6 +15,7 @@ module TheGoogle
 
     class << self
 
+      interchangeable_describe "Since I cannot find a good Ruby parser, I have to give this task out to an external service"
       interchangeable_method(:lookup_recurring_dates) do |options|
         [options[:date]]
       end
