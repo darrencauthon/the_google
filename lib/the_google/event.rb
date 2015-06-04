@@ -37,7 +37,7 @@ module TheGoogle
       def build_a_new_event_for event, date
         event.dup.tap do |new_event|
           new_event.start = date
-          new_event.end   = date + (event.end - event.start)
+          new_event.end   = date + (DateTime.parse(event.end.to_s) - DateTime.parse(event.start.to_s))
         end
       end
 

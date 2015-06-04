@@ -31,7 +31,7 @@ describe TheGoogle::Event do
 
     let(:timeframe) { [min, max] }
 
-    let(:now) { Time.now }
+    let(:now) { DateTime.now }
 
     let(:min) { now - random_integer }
     let(:max) { now + random_integer }
@@ -91,6 +91,29 @@ describe TheGoogle::Event do
           diff = event.end - event.start
           results[0].end.must_equal date1 + diff
           results[1].end.must_equal date2 + diff
+        end
+
+        describe "the new date is a datetime but the event uses time" do
+
+          let(:event) do
+            TheGoogle::Event.new.tap do |e|
+              e.start = Time.parse((now - random_integer).to_s)
+              e.end   = Time.parse((e.start + random_integer).to_s)
+              e.name  = random_string
+            end
+          end
+
+          it "should set the start date to whatever was returned by the date service" do
+            results[0].start.must_equal date1
+            results[1].start.must_equal date2
+          end
+
+          it "should adjust the end date accordingly" do
+            diff = DateTime.parse(event.end.to_s) - DateTime.parse(event.start.to_s)
+            results[0].end.must_equal date1 + diff
+            results[1].end.must_equal date2 + diff
+          end
+
         end
 
       end
