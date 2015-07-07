@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = TheGoogle::VERSION
   spec.authors       = ["Darren Cauthon"]
   spec.email         = ["darren@cauthon.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Helpers around a google integration.}
+  spec.description   = %q{Helpers around a google integration.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
