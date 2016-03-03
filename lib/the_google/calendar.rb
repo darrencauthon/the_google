@@ -51,10 +51,10 @@ module TheGoogle
       TheGoogle::Event.new.tap do |e|
         e.name = record.summary
         e.recurrence = record.recurrence if record.respond_to?(:recurrence) && record.recurrence
-        if record.start.date_time || record.start.date
+        if record.start && (record.start.date_time || record.start.date)
           e.start = record.start.date_time || Time.parse(record.start.date)
         end
-        if record.end.date_time || record.end.date
+        if record.end && (record.end.date_time || record.end.date)
           e.end = record.end.date_time || Time.parse(record.end.date)
         end
       end

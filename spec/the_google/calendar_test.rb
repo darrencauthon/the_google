@@ -201,6 +201,21 @@ describe TheGoogle::Calendar do
                 .returns api_result
         end
 
+        describe 'and the events do not have start or end values' do
+
+          let(:items) do
+            [
+              Struct.new(:summary, :start, :end).new(random_string, nil, nil),
+              Struct.new(:summary, :start, :end).new(random_string, nil, nil),
+            ]
+          end
+
+          it 'should not throw when theres no start value' do
+            calendar.events_between(time_min, time_max)
+          end
+
+        end
+
         it "should return two events" do
           results.count.must_equal 2
           results.each { |x| x.is_a?(TheGoogle::Event).must_equal true }
